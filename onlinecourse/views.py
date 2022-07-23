@@ -123,12 +123,13 @@ def show_exam_result(request, course_id, submission_id):
             pts += question.grade
         tot_pts += question.grade
     grade = float(pts)/float(tot_pts) * 100.0
-    context = {
-        course: course,
-        grade: grade,
-        choices: choices
-    }
-    return render(request, 'onlinecourse/exam_result_bootstrap.html', context)
+    return render(
+        request,
+        'onlinecourse/exam_result_bootstrap.html',
+        {"course":course,  
+        "submission": submission,
+        "grade": grade }
+    )
 
 
 def submit(request, course_id):
@@ -141,7 +142,7 @@ def submit(request, course_id):
     submission.choices.set(submitted_answers)
     submission.save()
 
-    return HttpResponseRedirect(reverse(viewname='onlinecourse:show_exam_result',args=(course.id, submission.id,)))
+    return HttpResponseRedirect(reverse(viewname='onlinecourse:show_exam_result', args=(course_id, submission_id,)))
 
 
 
